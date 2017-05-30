@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# This is a build script for VisualSLAM.
+# This is a build script for Co-Fusion.
 #
 # To install all dependencies as well, invoke:
 #   ./build.sh --fresh-install
