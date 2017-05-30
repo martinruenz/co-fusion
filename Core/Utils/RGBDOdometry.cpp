@@ -366,8 +366,7 @@ void RGBDOdometry::getIncrementalTransformation(Eigen::Vector3f& trans, Eigen::M
                            nextDepth[i], lastImage[i], nextImage[i], lastMask[i], nextMask[i], corresImg[i], sumResidualRGB,
                            maxDepthDeltaRGB, kt, krkInv, sigma, rgbSize, GPUConfig::getInstance().rgbResThreads,
                            GPUConfig::getInstance().rgbResBlocks,
-                           /*(i == 0 && j == iterations[i]-1) ? rgbErrorSurface :*/ 0,
-                           maskID);
+                           /*(i == 0 && j == iterations[i]-1) ? rgbErrorSurface :*/ 0, maskID);
         TOCK("computeRgbResidual");
       }
 

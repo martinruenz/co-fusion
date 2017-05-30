@@ -122,7 +122,7 @@ SegmentationResult Segmentation::performSegmentation(std::list<std::shared_ptr<M
 }
 
 SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_ptr<Model>>& models, const FrameData& frame,
-                                                         unsigned char nextModelID, bool allowNew) {
+                                                        unsigned char nextModelID, bool allowNew) {
   assert(models.size() < 256);
 
   static unsigned CFRAME = 0;
@@ -185,11 +185,7 @@ SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_pt
     cv::Mat icpFull = m->downloadICPErrorTexture();
     cv::Mat icp = slic.downsample<float>(icpFull);
     cv::Mat conf = slic.downsample<float>(vertConfTex, 3);
-    result.modelData.push_back({
-        m->getID(), it,
-        icp,
-        conf
-    });
+    result.modelData.push_back({m->getID(), it, icp, conf});
     modelIdToIndex[m->getID()] = mIndex++;
 
     // Average confidence
@@ -302,7 +298,7 @@ SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_pt
   }  // unaries
 
   // Make borders uncertain
-  if (false){
+  if (false) {
     for (unsigned y = 1; y < lowHeight - 1; y++) {
       for (unsigned x = 1; x < lowWidth - 1; x++) {
         const unsigned idx = y * lowWidth + x;
@@ -404,8 +400,7 @@ SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_pt
     cv::Vec3b* pOriginal = ((cv::Vec3b*)original.data);
     cv::Mat overlay = mapLabelToColorImage(segmentation, true);
     cv::Vec3b* pOverlay = ((cv::Vec3b*)overlay.data);
-    for (unsigned i = 0; i < result.total(); i++)
-      pResult[i] = 0.85 * pOverlay[i] + 0.15 * pOriginal[i];
+    for (unsigned i = 0; i < result.total(); i++) pResult[i] = 0.85 * pOverlay[i] + 0.15 * pOriginal[i];
     return result;
   };
 
@@ -554,7 +549,7 @@ SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_pt
   // Remove labels that are too close to border
   const unsigned borderSize = 20;
   for (SegmentationResult::ModelData& m : result.modelData) {
-      if(m.id==0) continue;
+    if (m.id == 0) continue;
 
     if ((m.top < borderSize && m.bottom < borderSize) || (m.left < borderSize && m.right < borderSize) ||
         (m.top > fullHeight - borderSize && m.bottom > fullHeight - borderSize) ||

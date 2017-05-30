@@ -68,8 +68,7 @@ ModelProjection::ModelProjection()
       oldNormalTexture(Resolution::getInstance().width(), Resolution::getInstance().height(), GL_RGBA32F, GL_LUMINANCE, GL_FLOAT, false,
                        true),
       oldTimeTexture(Resolution::getInstance().width(), Resolution::getInstance().height(), GL_LUMINANCE16UI_EXT, GL_LUMINANCE_INTEGER_EXT,
-                     GL_UNSIGNED_SHORT, false, true)
-{
+                     GL_UNSIGNED_SHORT, false, true) {
   indexFrameBuffer.AttachColour(*sparseIndexTexture.texture);
   indexFrameBuffer.AttachColour(*sparseVertexConfTexture.texture);
   indexFrameBuffer.AttachColour(*sparseColorTimeTexture.texture);

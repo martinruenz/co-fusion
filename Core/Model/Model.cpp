@@ -125,7 +125,7 @@ Model::Model(unsigned char id, float confidenceThresh, bool enableFillIn, bool e
       fillIn(enableFillIn ? std::make_unique<FillIn>() : nullptr) {
   switch (matchingType) {
     case MatchingType::Drost:
-      //removed
+      // removed
       break;
   }
 
@@ -317,7 +317,6 @@ void Model::renderPointCloud(const Eigen::Matrix4f& mvp, const bool drawUnstable
 const OutputBuffer& Model::getModel() { return vbos[target]; }
 
 void Model::generateCUDATextures(GPUTexture* depth, GPUTexture* mask) {
-
   GPUSetup& gpu = GPUSetup::getInstance();
   std::vector<DeviceArray2D<float>>& depthPyr = gpu.depth_tmp;
   std::vector<DeviceArray2D<unsigned char>>& maskPyr = gpu.mask_tmp;
@@ -765,7 +764,7 @@ void Model::eraseErrorGeometry(GPUTexture* depthFiltered) {
   glActiveTexture(GL_TEXTURE6);
   glBindTexture(GL_TEXTURE_2D, depthFiltered->texture->tid);
 
-// glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, countQuery);
+  // glBeginQuery(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, countQuery);
 
   glDrawTransformFeedback(GL_POINTS, vbos[target].stateObject);  // RUN GPU-PASS
 

@@ -198,7 +198,6 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
     globalModel->initialise(*feedbackBuffers[FeedbackBuffer::RAW], *feedbackBuffers[FeedbackBuffer::FILTERED]);
     globalModel->getFrameOdometry().initFirstRGB(textures[GPUTexture::RGB]);
   } else {
-
     bool trackingOk = true;
 
     // Regular execution, false if pose is provided by user
@@ -220,7 +219,6 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
       trackingOk = !reloc || globalModel->getFrameOdometry().lastICPError < 1e-04;
 
       if (enableMultipleModels) {
-
         auto getMaxDepth = [](const SegmentationResult::ModelData& data) -> float { return data.depthMean + data.depthStd * 1.2; };
 
         if (spawnOffset < modelSpawnOffset) spawnOffset++;
@@ -238,9 +236,8 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
         // Spawn new model
         if (segmentationResult.hasNewLabel) {
           const SegmentationResult::ModelData& newModelData = segmentationResult.modelData.back();
-          std::cout << "New label detected ("
-                    << newModelData.left << "," << newModelData.top << " " << newModelData.right << "," << newModelData.bottom
-                    << ") - try relocating..." << std::endl;
+          std::cout << "New label detected (" << newModelData.left << "," << newModelData.top << " " << newModelData.right << ","
+                    << newModelData.bottom << ") - try relocating..." << std::endl;
 
           if (enableRedetection) {
             // [Removed code]
@@ -257,8 +254,7 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
 
         // Set max-depth
         ModelList::iterator it = models.begin();
-        for (unsigned i = 1; i < models.size(); i++)
-          (*++it)->setMaxDepth(getMaxDepth(segmentationResult.modelData[i]));
+        for (unsigned i = 1; i < models.size(); i++) (*++it)->setMaxDepth(getMaxDepth(segmentationResult.modelData[i]));
 
         if (segmentationResult.hasNewLabel) {
           newModel->predictIndices(tick, maxDepthProcessed, timeDelta);
@@ -481,11 +477,8 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
       }
 
       for (auto model : models) {
-        model->clean(tick,
-                     rawGraph,
-                     timeDelta, maxDepthProcessed,
-                     fernAccepted,
-                     textures[GPUTexture::DEPTH_METRIC_FILTERED], textures[GPUTexture::MASK]);
+        model->clean(tick, rawGraph, timeDelta, maxDepthProcessed, fernAccepted, textures[GPUTexture::DEPTH_METRIC_FILTERED],
+                     textures[GPUTexture::MASK]);
       }
     }
   }
@@ -513,8 +506,8 @@ bool CoFusion::processFrame(const FrameData& frame, const Eigen::Matrix4f* inPos
 
       Eigen::Matrix<float, 7, 1> p;
       p << transObject(0), transObject(1), transObject(2), q.x(), q.y(), q.z(), q.w();
-      //model->getPoseLog().push_back({tick-1, p}); //Log ticks
-      model->getPoseLog().push_back({frame.timestamp, p}); //Log timestamps
+      // model->getPoseLog().push_back({tick-1, p}); //Log ticks
+      model->getPoseLog().push_back({frame.timestamp, p});  // Log timestamps
     }
     first = false;
   }
@@ -545,9 +538,8 @@ void CoFusion::predict() {
   TOCK("IndexMap::ACTIVE");
 }
 
-bool CoFusion::requiresFillIn(ModelPointer model, float ratio)
-{
-  if(!model->allowsFillIn()) return false;
+bool CoFusion::requiresFillIn(ModelPointer model, float ratio) {
+  if (!model->allowsFillIn()) return false;
 
   TICK("autoFill");
   resize.image(model->getRGBProjection(), imageBuff);
@@ -556,8 +548,8 @@ bool CoFusion::requiresFillIn(ModelPointer model, float ratio)
   // TODO do this faster
   for (int i = 0; i < imageBuff.rows; i++) {
     for (int j = 0; j < imageBuff.cols; j++) {
-      sum += imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(0) > 0 && imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(1) > 0 &&
-             imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(2) > 0;
+      sum += imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(0) > 0 &&
+             imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(1) > 0 && imageBuff.at<Eigen::Matrix<unsigned char, 3, 1>>(i, j)(2) > 0;
     }
   }
   TOCK("autoFill");
@@ -571,7 +563,8 @@ void CoFusion::filterDepth() {
   uniforms.push_back(Uniform("cols", (float)Resolution::getInstance().cols()));
   uniforms.push_back(Uniform("rows", (float)Resolution::getInstance().rows()));
   uniforms.push_back(Uniform("maxD", depthCutoff));
-  computePacks[ComputePack::FILTER]->compute(textures[GPUTexture::DEPTH_METRIC]->texture, &uniforms);  // Writes to GPUTexture::DEPTH_METRIC_FILTERED
+  computePacks[ComputePack::FILTER]->compute(textures[GPUTexture::DEPTH_METRIC]->texture,
+                                             &uniforms);  // Writes to GPUTexture::DEPTH_METRIC_FILTERED
 }
 
 void CoFusion::normaliseDepth(const float& minVal, const float& maxVal) {

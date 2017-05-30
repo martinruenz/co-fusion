@@ -36,9 +36,7 @@ KlgLogReader::KlgLogReader(std::string file, bool flipColors) : LogReader(file, 
   std::cout << "Reading log file: " << file << " which has " << numFrames << " frames. " << std::endl;
 }
 
-KlgLogReader::~KlgLogReader() {
-  fclose(fp);
-}
+KlgLogReader::~KlgLogReader() { fclose(fp); }
 
 void KlgLogReader::getBack() {
   assert(filePointers.size() > 0);

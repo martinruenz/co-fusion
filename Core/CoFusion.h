@@ -348,9 +348,9 @@ class CoFusion {
   // std::vector<int64_t> poseLogTimes;
 
   // Scaled down textures
-  Img<Eigen::Matrix<unsigned char, 3, 1>> imageBuff; // imageTex (only used for fillIn)
-  Img<Eigen::Vector4f> consBuff;  // vertexTex
-  Img<unsigned short> timesBuff;  // oldTimeTex
+  Img<Eigen::Matrix<unsigned char, 3, 1>> imageBuff;  // imageTex (only used for fillIn)
+  Img<Eigen::Vector4f> consBuff;                      // vertexTex
+  Img<unsigned short> timesBuff;                      // oldTimeTex
 
   const bool closeLoops;
   const bool iclnuim;

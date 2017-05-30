@@ -91,8 +91,7 @@ cv::Mat Slic::downsample() const {
   cv::Vec3i* sumData = (cv::Vec3i*)sums.data;
   unsigned empties = 0;
   for (unsigned indexBig = 0; indexBig < slicInput->dataSize; indexBig++)
-    sumData[slic[indexBig]] += cv::Vec3i(inPtr[indexBig].b, inPtr[indexBig].g,
-                                         inPtr[indexBig].r);
+    sumData[slic[indexBig]] += cv::Vec3i(inPtr[indexBig].b, inPtr[indexBig].g, inPtr[indexBig].r);
 
   for (unsigned index = 0; index < spixelNum; index++) {
     int cnt = spixelCounts[index];
@@ -106,8 +105,7 @@ cv::Mat Slic::downsample() const {
     resData[index] = cv::Vec3b(sumData[readIndex][0] / cnt, sumData[readIndex][1] / cnt, sumData[readIndex][2] / cnt);
   }
 
-  if (empties != 0)
-    std::cout << "Empty superpixel count: " << empties;
+  if (empties != 0) std::cout << "Empty superpixel count: " << empties;
 
   return result;
 }

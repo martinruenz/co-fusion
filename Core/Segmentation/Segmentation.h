@@ -28,8 +28,7 @@ typedef std::list<std::shared_ptr<Model>> ModelList;
 typedef ModelList::iterator ModelListIterator;
 
 struct SegmentationResult {
-
-    cv::Mat fullSegmentation;
+  cv::Mat fullSegmentation;
 
   bool hasNewLabel = false;
   float depthRange;
@@ -79,7 +78,7 @@ class Segmentation {
                                          bool allowNew);
 
   SegmentationResult performSegmentationCRF(std::list<std::shared_ptr<Model>>& models, const FrameData& frame, unsigned char nextModelID,
-                                             bool allowNew);
+                                            bool allowNew);
 
   /**
      * @brief denseCRF Compute a segmentation of labels based on a fully connected CRF, using icp+projection unary terms and rgb+position+depth pairwise terms

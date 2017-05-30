@@ -305,10 +305,10 @@ void MainController::launch() {
         cudaCheckError();
       }
 
-      coFusion =
-          new CoFusion(openLoop ? std::numeric_limits<int>::max() / 2 : timeDelta, icpCountThresh, icpErrThresh, covThresh, !openLoop,
-                       iclnuim, reloc, photoThresh, confGlobalInit, confObjectInit, gui->depthCutoff->Get(), gui->icpWeight->Get(), fastOdom, fernThresh, so3, frameToFrameRGB,
-                       gui->modelSpawnOffset->Get(), Model::MatchingType::Drost, exportDir, exportSegmentation);
+      coFusion = new CoFusion(openLoop ? std::numeric_limits<int>::max() / 2 : timeDelta, icpCountThresh, icpErrThresh, covThresh,
+                              !openLoop, iclnuim, reloc, photoThresh, confGlobalInit, confObjectInit, gui->depthCutoff->Get(),
+                              gui->icpWeight->Get(), fastOdom, fernThresh, so3, frameToFrameRGB, gui->modelSpawnOffset->Get(),
+                              Model::MatchingType::Drost, exportDir, exportSegmentation);
 
       auto globalModel = coFusion->getBackgroundModel();
       gui->addModel(globalModel->getID(), globalModel->getConfidenceThreshold());
@@ -399,7 +399,7 @@ void MainController::run() {
       coFusion->predict();
 
       // TODO Only if relevant setting changed (Deactivate when writing (debug/visualisation) images to hd
-      if(logReader->getFrameData().timestamp) coFusion->performSegmentation(logReader->getFrameData());
+      if (logReader->getFrameData().timestamp) coFusion->performSegmentation(logReader->getFrameData());
     }
 
     TICK("GUI");
