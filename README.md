@@ -8,6 +8,9 @@ To run Co-Fusion in real-time, you have to use our approach based no motion cues
 
 More information and the paper can be found [here](http://visual.cs.ucl.ac.uk/pubs/cofusion/index.html).
 
+If you would like to see a short video comparing ElasticFusion and Co-Fusion, click on the following image:
+[![Figure of Co-Fusion](figure.jpg "Click me to see a video.")](http://visual.cs.ucl.ac.uk/pubs/cofusion/ef-cf-compare.webm)
+
 ## Building Co-Fusion
 
 The script `Scripts/install.sh` shows step-by-step how Co-Fusion is build. A python-based install script is also available, see `Scripts\install.py`.
