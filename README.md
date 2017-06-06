@@ -11,6 +11,12 @@ More information and the paper can be found [here](http://visual.cs.ucl.ac.uk/pu
 If you would like to see a short video comparing ElasticFusion and Co-Fusion, click on the following image:
 [![Figure of Co-Fusion](figure.jpg "Click me to see a video.")](http://visual.cs.ucl.ac.uk/pubs/cofusion/ef-cf-compare.webm)
 
+## Publication
+
+Please cite this publication, when using Co-Fusion (bibtex can be found on project webpage):
+
+* Co-Fusion: **Real-time Segmentation, Tracking and Fusion of Multiple Objects**, Martin Rünz and Lourdes Agapito, 2017 IEEE International Conference on Robotics and Automation (ICRA)
+
 ## Building Co-Fusion
 
 The script `Scripts/install.sh` shows step-by-step how Co-Fusion is build. A python-based install script is also available, see `Scripts\install.py`.
