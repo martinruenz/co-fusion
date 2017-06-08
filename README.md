@@ -25,6 +25,11 @@ The script `Scripts/install.sh` shows step-by-step how Co-Fusion is build. A pyt
 
 We are going to release testing-data and dataset tools after coming back from ICRA (June 2017). Stay tuned!
 
+## Hardware
+
+In order to run Co-Fusion smoothly, you need a fast GPU with enough memory to store multiple models simultaneously. We used an Nvidia TitanX for most experiments, but also successfully tested Co-Fusion on a laptop computer with an Nvidia GeForce™ GTX 960M. If your GPU memory is limited, the `COFUSION_NUM_SURFELS` CMake option can help reduce the memory footprint per model.
+While the tracking stage of Co-Fusion calls for a fast GPU, the motion based segmentation performance depends on the CPU and accordingly, having a nice processor helps as well.
+
 ## Reformatting code:
 The code-formatting rules for this project are defined `.clang-format`. Run:
 
