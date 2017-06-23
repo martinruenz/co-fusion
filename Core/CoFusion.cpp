@@ -588,8 +588,8 @@ void CoFusion::coloriseMasks() {
 void CoFusion::spawnObjectModel() {
   assert(!newModel);
   if (preallocatedModels.size()) {
-    newModel = preallocatedModels.back();
-    preallocatedModels.pop_back();
+    newModel = preallocatedModels.front();
+    preallocatedModels.pop_front();
   } else {
     newModel = std::make_shared<Model>(getNextModelID(true), initConfThresObject, false, true, enablePoseLogging, modelMatchingType);
   }
