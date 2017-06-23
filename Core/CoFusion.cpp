@@ -102,6 +102,12 @@ CoFusion::~CoFusion() {
   cudaCheckError();
 }
 
+void CoFusion::preallocateModels(unsigned count) {
+  for (unsigned i = 0; i < count; ++i)
+    preallocatedModels.push_back(
+        std::make_shared<Model>(getNextModelID(true), initConfThresObject, false, true, enablePoseLogging, modelMatchingType));
+}
+
 SegmentationResult CoFusion::performSegmentation(const FrameData& frame) {
   return labelGenerator.performSegmentation(models, frame, getNextModelID(), spawnOffset >= modelSpawnOffset);
 }
@@ -581,7 +587,12 @@ void CoFusion::coloriseMasks() {
 
 void CoFusion::spawnObjectModel() {
   assert(!newModel);
-  newModel = std::make_shared<Model>(getNextModelID(true), initConfThresObject, false, true, enablePoseLogging, modelMatchingType);
+  if (preallocatedModels.size()) {
+    newModel = preallocatedModels.back();
+    preallocatedModels.pop_back();
+  } else {
+    newModel = std::make_shared<Model>(getNextModelID(true), initConfThresObject, false, true, enablePoseLogging, modelMatchingType);
+  }
   newModel->getFrameOdometry().initFirstRGB(textures[GPUTexture::RGB]);
 }
 

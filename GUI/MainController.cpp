@@ -43,6 +43,7 @@
     -s      Frames to skip at start of log.
     -e      Cut off frame of log.
     -f      Flip RGB/BGR.
+    -a      Preallocate memory for a number of models, which can increase performance (default: 0)
     -icl    Enable this if using the ICL-NUIM dataset (flips normals to account for negative focal length on that data).
     -o      Open loop mode.
     -rl     Enable relocalisation.
@@ -185,6 +186,7 @@ MainController::MainController(int argc, char* argv[])
   Parse::get().arg(argc, argv, "-ic", icpCountThresh);
   Parse::get().arg(argc, argv, "-s", start);
   Parse::get().arg(argc, argv, "-e", end);
+  Parse::get().arg(argc, argv, "-a", preallocatedModelsCount);
 
   logReader->flipColors = Parse::get().arg(argc, argv, "-f", empty) > -1;
 
@@ -309,6 +311,8 @@ void MainController::launch() {
                               !openLoop, iclnuim, reloc, photoThresh, confGlobalInit, confObjectInit, gui->depthCutoff->Get(),
                               gui->icpWeight->Get(), fastOdom, fernThresh, so3, frameToFrameRGB, gui->modelSpawnOffset->Get(),
                               Model::MatchingType::Drost, exportDir, exportSegmentation);
+
+      coFusion->preallocateModels(preallocatedModelsCount);
 
       auto globalModel = coFusion->getBackgroundModel();
       gui->addModel(globalModel->getID(), globalModel->getConfidenceThreshold());

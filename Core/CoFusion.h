@@ -52,6 +52,8 @@ class CoFusion {
 
   virtual ~CoFusion();
 
+  void preallocateModels(unsigned count);
+
   SegmentationResult performSegmentation(const FrameData& frame);
 
   /**
@@ -309,6 +311,7 @@ class CoFusion {
  private:
   ModelList models;  // also contains static environment (first model)
   ModelList inactiveModels;
+  ModelList preallocatedModels;        // Since some systems are slow in allocating new models, allow to preallocate models for later use.
   ModelPointer newModel;               // Stored and added to list as soon as frame is processed
   std::shared_ptr<Model> globalModel;  // static environment
   unsigned char nextID = 0;

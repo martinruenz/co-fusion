@@ -60,7 +60,7 @@ class MainController {
 
   float confGlobalInit, confObjectInit, icpErrThresh, covThresh, photoThresh, fernThresh;
 
-  int timeDelta, icpCountThresh, start, end;
+  int timeDelta, icpCountThresh, start, end, preallocatedModelsCount;
 
   bool fillIn, openLoop, reloc, frameskip, quit, fastOdom, so3, rewind, frameToFrameRGB;
 
