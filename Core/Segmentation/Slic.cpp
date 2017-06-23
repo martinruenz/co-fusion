@@ -105,7 +105,8 @@ cv::Mat Slic::downsample() const {
     resData[index] = cv::Vec3b(sumData[readIndex][0] / cnt, sumData[readIndex][1] / cnt, sumData[readIndex][2] / cnt);
   }
 
-  if (empties != 0) std::cout << "Empty superpixel count: " << empties;
+  // Optionally be verbose about empty superpixel.
+  // if (empties != 0) std::cout << "Empty superpixel count: " << empties;
 
   return result;
 }
