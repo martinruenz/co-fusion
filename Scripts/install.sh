@@ -81,7 +81,6 @@ if [ "${1:-}" = "--fresh-install" ]; then
 
   git clone --depth=1 --branch devel https://github.com/martinruenz/Pangolin.git
   git clone --depth=1 https://github.com/occipital/OpenNI2.git
-  git clone --depth=1 https://github.com/opencv/opencv_contrib.git
   git clone --depth=1 https://github.com/martinruenz/densecrf.git
   git clone --depth=1 https://github.com/carlren/gSLICr.git
 
@@ -95,7 +94,6 @@ if [ "${1:-}" = "--fresh-install" ]; then
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX="`pwd`/../install" \
-      -DOPENCV_EXTRA_MODULES_PATH="`pwd`/../../opencv_contrib/modules" \
       \
       `# OpenCV: (building is not possible when DBUILD_opencv_video/_videoio is OFF?)` \
       -DBUILD_opencv_flann=ON  \
@@ -230,4 +228,3 @@ cmake \
   ..
 make -j8
 cd ..
-
