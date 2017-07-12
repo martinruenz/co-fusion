@@ -46,9 +46,9 @@ class LogReader {
 
   virtual bool hasMore() = 0;
 
-  virtual bool rewound() = 0;
+  virtual bool rewind() = 0;
 
-  virtual void getBack() = 0;
+  virtual void getPrevious() = 0;
 
   virtual void fastForward(int frame) = 0;
 
@@ -68,8 +68,8 @@ class LogReader {
   int currentFrame;
 
  protected:
-  int32_t depthSize;
-  int32_t imageSize;
+  int32_t depthImageSize;
+  int32_t rgbImageSize;
 
   const std::string file;
   FILE* fp;

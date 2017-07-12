@@ -38,40 +38,42 @@ KlgLogReader::KlgLogReader(std::string file, bool flipColors) : LogReader(file, 
 
 KlgLogReader::~KlgLogReader() { fclose(fp); }
 
-void KlgLogReader::getBack() {
-  assert(filePointers.size() > 0);
-  fseek(fp, filePointers.top(), SEEK_SET);
-  filePointers.pop();
-  getCore();
-}
 
 void KlgLogReader::getNext() {
   filePointers.push(ftell(fp));
   getCore();
 }
 
+
+void KlgLogReader::getPrevious() {
+  assert(filePointers.size() > 0);
+  fseek(fp, filePointers.top(), SEEK_SET);
+  filePointers.pop();
+  getCore();
+}
+
 void KlgLogReader::getCore() {
   CHECK_THROW(fread(&data.timestamp, sizeof(int64_t), 1, fp));
-  CHECK_THROW(fread(&depthSize, sizeof(int32_t), 1, fp));
-  CHECK_THROW(fread(&imageSize, sizeof(int32_t), 1, fp));
-  CHECK_THROW(fread(depthBuffer.data, depthSize, 1, fp));
+  CHECK_THROW(fread(&depthImageSize, sizeof(int32_t), 1, fp));
+  CHECK_THROW(fread(&rgbImageSize, sizeof(int32_t), 1, fp));
+  CHECK_THROW(fread(depthBuffer.data, depthImageSize, 1, fp));
 
-  if (imageSize > 0) {
-    CHECK_THROW(fread(rgbBuffer.data, imageSize, 1, fp));
+  if (rgbImageSize > 0) {
+    CHECK_THROW(fread(rgbBuffer.data, rgbImageSize, 1, fp));
   }
 
-  if (depthSize != numPixels * 2) {
+  if (depthImageSize != numPixels * 2) {
     unsigned long decompLength = numPixels * 2;
-    uncompress(depthDecompressionBuffer.data, (unsigned long*)&decompLength, depthBuffer.data, depthSize);
+    uncompress(depthDecompressionBuffer.data, (unsigned long*)&decompLength, depthBuffer.data, depthImageSize);
     depthDecompressionBuffer.convertTo(data.depth, CV_32FC1, 0.001);
   } else {
     depthBuffer.convertTo(data.depth, CV_32FC1, 0.001);
   }
 
   data.rgb = rgbBuffer;
-  if (imageSize > 0) {
-    if (imageSize != numPixels * 3) {
-      jpeg.readData(rgbBuffer.data, imageSize, rgbDecompressionBuffer.data);
+  if (rgbImageSize > 0) {
+    if (rgbImageSize != numPixels * 3) {
+      jpeg.readData(rgbBuffer.data, rgbImageSize, rgbDecompressionBuffer.data);
       data.rgb = rgbDecompressionBuffer;
     }
   } else {
@@ -89,13 +91,13 @@ void KlgLogReader::fastForward(int frame) {
 
     CHECK_THROW(fread(&data.timestamp, sizeof(int64_t), 1, fp));
 
-    CHECK_THROW(fread(&depthSize, sizeof(int32_t), 1, fp));
-    CHECK_THROW(fread(&imageSize, sizeof(int32_t), 1, fp));
+    CHECK_THROW(fread(&depthImageSize, sizeof(int32_t), 1, fp));
+    CHECK_THROW(fread(&rgbImageSize, sizeof(int32_t), 1, fp));
 
-    CHECK_THROW(fread(depthBuffer.data, depthSize, 1, fp));
+    CHECK_THROW(fread(depthBuffer.data, depthImageSize, 1, fp));
 
-    if (imageSize > 0) {
-      CHECK_THROW(fread(rgbBuffer.data, imageSize, 1, fp));
+    if (rgbImageSize > 0) {
+      CHECK_THROW(fread(rgbBuffer.data, rgbImageSize, 1, fp));
     }
 
     currentFrame++;
@@ -106,7 +108,7 @@ int KlgLogReader::getNumFrames() { return numFrames; }
 
 bool KlgLogReader::hasMore() { return currentFrame + 1 < numFrames; }
 
-bool KlgLogReader::rewound() {
+bool KlgLogReader::rewind() {
   if (filePointers.size() == 0) {
     fclose(fp);
     fp = fopen(file.c_str(), "rb");

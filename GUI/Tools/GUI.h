@@ -48,7 +48,7 @@ struct ModelInfo {
     m.confThreshold = nullptr;
   }
   virtual ~ModelInfo() {
-    pangolin::RemoveVariable("oi.Model " + std::to_string(id) + " (conf-t)");
+    //pangolin::RemoveVariable("oi.Model " + std::to_string(id) + " (conf-t)");
     delete confThreshold;
   }
 

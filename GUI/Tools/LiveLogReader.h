@@ -40,9 +40,9 @@ class LiveLogReader : public LogReader {
 
   bool hasMore();
 
-  bool rewound() { return false; }
+  bool rewind() { return false; }
 
-  void getBack() {}
+  void getPrevious() {}
 
   void fastForward(int frame) {}
 

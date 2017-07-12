@@ -154,7 +154,7 @@ ImageLogReader::ImageLogReader(std::string colorDirectory, std::string depthDire
 
 ImageLogReader::~ImageLogReader() { stopBufferLoop(); }
 
-void ImageLogReader::getBack() { assert(0); }
+void ImageLogReader::getPrevious() { assert(0); }
 
 void ImageLogReader::getNext() {
   if (bufferingLoopActive)
@@ -294,8 +294,8 @@ int ImageLogReader::getNumFrames() { return numFrames; }
 
 bool ImageLogReader::hasMore() { return currentFrame + 1 < numFrames; }
 
-bool ImageLogReader::rewound() {
-  assert(0 && "rewound");
+bool ImageLogReader::rewind() {
+  assert(0 && "rewind");
 
   return false;
 }
