@@ -60,8 +60,7 @@ target_link_libraries(CoFusion
 )
 
 add_library(CoFusionTools SHARED
-            ${tools_srcs}
-        Tools/PangolinReader.cpp Tools/PangolinReader.h)
+            ${tools_srcs})
 
 target_link_libraries(CoFusionTools
                       ${ZLIB_LIBRARY}
