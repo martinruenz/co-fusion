@@ -79,7 +79,7 @@ if [ "${1:-}" = "--fresh-install" ]; then
      sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
   fi
 
-  git clone --depth=1 --branch devel https://github.com/martinruenz/Pangolin.git
+  git clone --depth=1 https://github.com/stevenlovegrove/Pangolin.git
   git clone --depth=1 https://github.com/occipital/OpenNI2.git
   git clone --depth=1 https://github.com/martinruenz/densecrf.git
   git clone --depth=1 https://github.com/carlren/gSLICr.git
@@ -147,7 +147,7 @@ if [ "${1:-}" = "--fresh-install" ]; then
       ..
     make -j8
     make install > /dev/null
-    cd ../install
+    cd ../build
     OpenCV_DIR=$(pwd)
     cd ../..
   fi
@@ -217,7 +217,7 @@ cmake \
 make -j8
 cd ../..
 
-# build VisualSLAM
+# build Co-Fusion
 cd ..
 mkdir -p build
 cd build
