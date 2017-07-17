@@ -38,12 +38,10 @@ KlgLogReader::KlgLogReader(std::string file, bool flipColors) : LogReader(file, 
 
 KlgLogReader::~KlgLogReader() { fclose(fp); }
 
-
 void KlgLogReader::getNext() {
   filePointers.push(ftell(fp));
   getCore();
 }
-
 
 void KlgLogReader::getPrevious() {
   assert(filePointers.size() > 0);

@@ -113,10 +113,10 @@ MainController::MainController(int argc, char* argv[])
 
   Parse::get().arg(argc, argv, "-l", logFile);
   if (logFile.length()) {
-    if(boost::filesystem::exists(logFile) && boost::algorithm::ends_with(logFile, ".klg")){
+    if (boost::filesystem::exists(logFile) && boost::algorithm::ends_with(logFile, ".klg")) {
       logReader = std::make_unique<KlgLogReader>(logFile, Parse::get().arg(argc, argv, "-f", empty) > -1);
-    }else{
-      logReader = std::make_unique<PangolinReader>(logFile,Parse::get().arg(argc, argv, "-f", empty) > -1);
+    } else {
+      logReader = std::make_unique<PangolinReader>(logFile, Parse::get().arg(argc, argv, "-f", empty) > -1);
     }
     logReaderReady = true;
   }
@@ -246,10 +246,10 @@ MainController::MainController(int argc, char* argv[])
   if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
     if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
   } else {
-    if(boost::filesystem::exists(logFile)){
-      //TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
+    if (boost::filesystem::exists(logFile)) {
+      // TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
       exportDir = baseDir + logFile + "-export/";
-    }else{
+    } else {
       exportDir = baseDir + "-export/";
     }
   }
@@ -346,7 +346,7 @@ void MainController::run() {
         TICK("LogRead");
         if (rewind) {
           if (!logReader->hasMore()) {
-	          logReader->getPrevious();
+            logReader->getPrevious();
           } else {
             logReader->getNext();
           }

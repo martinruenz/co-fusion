@@ -19,54 +19,49 @@
 #include <pangolin/pangolin.h>
 
 class PangolinReader : public LogReader {
-public:
-	PangolinReader(const std::string& file, bool flipColors);
-	virtual ~PangolinReader();
-	virtual void getNext();
-	virtual void getPrevious();
+ public:
+  PangolinReader(const std::string& file, bool flipColors);
+  virtual ~PangolinReader();
+  virtual void getNext();
+  virtual void getPrevious();
 
-	virtual int getNumFrames();
+  virtual int getNumFrames();
 
-	virtual bool hasMore();
+  virtual bool hasMore();
 
-	virtual bool rewind();
+  virtual bool rewind();
 
-	virtual void fastForward(int frame);
+  virtual void fastForward(int frame);
 
-	virtual const std::string getFile();
+  virtual const std::string getFile();
 
-	virtual void setAuto(bool value);
+  virtual void setAuto(bool value);
 
-	virtual FrameData getFrameData();
-private:
+  virtual FrameData getFrameData();
 
-	void configureConversion(pangolin::StreamInfo& stream, //in
-	                         bool& conversionUsageFlag, //out
-	                         cv::Mat& buffer //out
+ private:
+  void configureConversion(pangolin::StreamInfo& stream,  // in
+                           bool& conversionUsageFlag,     // out
+                           cv::Mat& buffer                // out
 
-	);
+                           );
 
-	std::unique_ptr<pangolin::VideoInterface> interface;
-	std::string uri;
+  std::unique_ptr<pangolin::VideoInterface> interface;
+  std::string uri;
 
+  // buffers & conversion
+  FrameData data;
+  bool resampleDepth = false;
+  bool resampleRgb = false;
+  cv::Size desiredImageSize;
 
-	//buffers & conversion
-	FrameData data;
-	bool resampleDepth = false;
-	bool resampleRgb = false;
-	cv::Size desiredImageSize;
+  cv::Mat depthBuffer;
+  cv::Mat rgbBuffer;
+  unsigned char* imageBuffer;
+  unsigned char* bufferCursor;
 
-	cv::Mat depthBuffer;
-	cv::Mat rgbBuffer;
-	unsigned char* imageBuffer;
-	unsigned char* bufferCursor;
-
-	//playback
-	bool lastFrameRetrieved = true;
-	bool hasMoreImages = true;
-	bool initialized = false;
-
-
+  // playback
+  bool lastFrameRetrieved = true;
+  bool hasMoreImages = true;
+  bool initialized = false;
 };
-
-
