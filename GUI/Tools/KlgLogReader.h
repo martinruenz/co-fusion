@@ -39,13 +39,13 @@ class KlgLogReader : public LogReader {
 
   void getNext();
 
-  void getBack();
+  void getPrevious();
 
   int getNumFrames();
 
   bool hasMore();
 
-  bool rewound();
+  bool rewind();
 
   void fastForward(int frame);
 

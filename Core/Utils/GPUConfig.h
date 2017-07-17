@@ -72,10 +72,11 @@ class GPUConfig {
     rgbStepMap["GeForce GTX TITAN X"] = std::pair<int, int>(256, 64);
     rgbResMap["GeForce GTX TITAN X"] = std::pair<int, int>(96, 496);
     so3StepMap["GeForce GTX TITAN X"] = std::pair<int, int>(432, 48);
-    // icpStepMap["GeForce GTX TITAN X"] = std::pair<int, int>(512, 112);
-    // rgbStepMap["GeForce GTX TITAN X"] = std::pair<int, int>(128, 112);
-    // rgbResMap["GeForce GTX TITAN X"] = std::pair<int, int>(256, 512);
-    // so3StepMap["GeForce GTX TITAN X"] = std::pair<int, int>(160, 64);
+
+    icpStepMap["GeForce GTX 780"] = std::pair<int, int>(128, 96);
+    rgbStepMap["GeForce GTX 780"] = std::pair<int, int>(128, 96);
+    rgbResMap["GeForce GTX 780"] = std::pair<int, int>(256, 288);
+    so3StepMap["GeForce GTX 780"] = std::pair<int, int>(160, 64);
 
     icpStepMap["GeForce GTX 780 Ti"] = std::pair<int, int>(128, 112);
     rgbStepMap["GeForce GTX 780 Ti"] = std::pair<int, int>(128, 112);

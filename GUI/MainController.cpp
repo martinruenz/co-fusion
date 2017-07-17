@@ -23,6 +23,8 @@
 #include "Tools/ImageLogReader.h"
 
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
+#include <GUI/Tools/PangolinReader.h>
 
 /*
  * Parameters:
@@ -64,7 +66,7 @@
     -offset        Offset between creating models
     -keep          Keep all models (even bad, deactivated)
 
-    -l             Processes a log-file (*.klg).
+    -l             Processes a log-file (*.klg/pangolin).
     -dir           Processes a log-directory (Default: Color####.png + Depth####.exr [+ Mask####.png])
     -depthdir      Separate depth directory (==dir if not provided)
     -maskdir       Separate mask directory (==dir if not provided)
@@ -111,7 +113,11 @@ MainController::MainController(int argc, char* argv[])
 
   Parse::get().arg(argc, argv, "-l", logFile);
   if (logFile.length()) {
-    logReader = std::make_unique<KlgLogReader>(logFile, Parse::get().arg(argc, argv, "-f", empty) > -1);
+    if(boost::filesystem::exists(logFile) && boost::algorithm::ends_with(logFile, ".klg")){
+      logReader = std::make_unique<KlgLogReader>(logFile, Parse::get().arg(argc, argv, "-f", empty) > -1);
+    }else{
+      logReader = std::make_unique<PangolinReader>(logFile,Parse::get().arg(argc, argv, "-f", empty) > -1);
+    }
     logReaderReady = true;
   }
 
@@ -240,7 +246,12 @@ MainController::MainController(int argc, char* argv[])
   if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
     if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
   } else {
-    exportDir = baseDir + logFile + "-export/";
+    if(boost::filesystem::exists(logFile)){
+      //TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
+      exportDir = baseDir + logFile + "-export/";
+    }else{
+      exportDir = baseDir + "-export/";
+    }
   }
   exportDir += "/";
 
@@ -335,12 +346,12 @@ void MainController::run() {
         TICK("LogRead");
         if (rewind) {
           if (!logReader->hasMore()) {
-            logReader->getBack();
+	          logReader->getPrevious();
           } else {
             logReader->getNext();
           }
 
-          if (logReader->rewound()) {
+          if (logReader->rewind()) {
             logReader->currentFrame = 0;
           }
         } else {
