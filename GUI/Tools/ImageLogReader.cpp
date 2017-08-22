@@ -72,7 +72,7 @@ ImageLogReader::ImageLogReader(std::string colorDirectory, std::string depthDire
   using namespace boost::filesystem;
   using namespace boost::algorithm;
 
-  const std::vector<std::string> rgbExtensions = {".jpg", ".png"};
+  const std::vector<std::string> rgbExtensions = {".jpg", ".png", ".ppm"};
   const std::vector<std::string> depthExtensions = {".exr", ".png"};
   const std::vector<std::string> maskExtensions = {".png", ".pgm"};
 
