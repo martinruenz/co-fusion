@@ -175,6 +175,7 @@ MainController::MainController(int argc, char* argv[])
   covThresh = 1e-05;
   photoThresh = 115;
   fernThresh = 0.3095f;
+  preallocatedModelsCount = 0;
 
   timeDelta = 200;  // Ignored, since openLoop
   icpCountThresh = 40000;
