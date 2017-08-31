@@ -23,7 +23,25 @@ The script `Scripts/install.sh` shows step-by-step how Co-Fusion is build. A pyt
 
 ## Dataset and evaluation tools
 
-We are going to release testing-data and dataset tools after coming back from ICRA (June 2017). Stay tuned!
+### Tools
+* Recorder for klg files: https://github.com/mp3guy/Logger2
+* Viewer for klg files: https://github.com/mp3guy/LogView
+* Images -> klg converter: https://github.com/martinruenz/dataset-tools/tree/master/convert_imagesToKlg
+* klg -> images/pointclouds: https://github.com/martinruenz/dataset-tools/tree/master/convert_klg
+* Evaluate segmentation (intersection-over-union): https://github.com/martinruenz/dataset-tools/tree/master/evaluate_segmentation
+* Automated evaluation of Co-Fusion: https://github.com/martinruenz/dataset-tools/tree/master/automatisation
+* Scripts to create synthetic datasets with blender: https://github.com/martinruenz/dataset-tools/tree/master/blender
+
+### Synthetic sequences:
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/car4-noise.klg
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/car4-full.tar.gz
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/room4-noise.klg
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/room4-full.tar.gz
+
+### Real (Asus Xtion) sequences, in [klg](https://github.com/mp3guy/LogView) format:
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/teddy-handover.klg
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/sliding-clock.klg
+* http://visual.cs.ucl.ac.uk/pubs/cofusion/data/place-items.klg
 
 ## Hardware
 
