@@ -101,7 +101,7 @@ MainController::MainController(int argc, char* argv[])
 
   std::string calibrationFile;
   Parse::get().arg(argc, argv, "-cal", calibrationFile);
-  calibrationFile = baseDir + calibrationFile;
+  if (calibrationFile.size()) calibrationFile = baseDir + calibrationFile;
 
   // Asus is default camera (might change later)
   Resolution::setResolution(640, 480);
