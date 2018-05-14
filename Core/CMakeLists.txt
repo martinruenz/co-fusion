@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0.2)
 # policy to export a different link interface
 cmake_policy(SET CMP0022 OLD)
 
-project(libcofusion)
+project(cofusion)
 
 message("Evaluating Core/CMAKE")
 
@@ -112,39 +112,59 @@ else(CMAKE_BUILD_TYPE MATCHES Release)
     add_compile_options(-Wno-maybe-uninitialized)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
-add_library(cofusion SHARED
-            ${srcs}
-            ${model_srcs}
-            ${utils_srcs}
-            ${shader_srcs}
-            ${cuda}
-            ${cuda_objs}
-            ${containers}
-            ${segmentation}
-            #${pangolin_headers} #TODO Remove
+add_library(${PROJECT_NAME} SHARED
+    ${srcs}
+    ${model_srcs}
+    ${utils_srcs}
+    ${shader_srcs}
+    ${cuda}
+    ${cuda_objs}
+    ${containers}
+    ${segmentation}
+    #${pangolin_headers} #TODO Remove
 )
 
-target_include_directories(cofusion PUBLIC
-                            ${CMAKE_CURRENT_SOURCE_DIR}
-                            ${GSLICR_DIR}/gSLICr_Lib
-                            ${ZLIB_INCLUDE_DIR}
-                            ${Pangolin_INCLUDE_DIRS}
-                            ${CUDA_INCLUDE_DIRS}
-                            ${OPENNI2_INCLUDE_DIR}
-                            ${OpenCV_INCLUDE_DIRS}
-                            ${BOOST_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${GSLICR_DIR}/gSLICr_Lib
+    ${ZLIB_INCLUDE_DIR}
+    ${Pangolin_INCLUDE_DIRS}
+    ${CUDA_INCLUDE_DIRS}
+    ${OPENNI2_INCLUDE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
+    ${BOOST_INCLUDE_DIRS}
 )
 
-target_link_libraries(cofusion
-                      gSLICr_lib
-                      ${DENSECRF_LIBRARIES}
-                      ${Eigen_LIBRARIES}
-                      ${Pangolin_LIBRARIES}
-                      ${CUDA_LIBRARIES}
-                      ${SUITESPARSE_LIBRARIES}
-                      ${OpenCV_LIBRARIES}
+target_link_libraries(${PROJECT_NAME}
+    gSLICr_lib
+    ${DENSECRF_LIBRARIES}
+    ${Eigen_LIBRARIES}
+    ${Pangolin_LIBRARIES}
+    ${CUDA_LIBRARIES}
+    ${SUITESPARSE_LIBRARIES}
+    ${OpenCV_LIBRARIES}
 )
 
 
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
 
-set_target_properties(cofusion PROPERTIES LINK_INTERFACE_LIBRARIES "")
+
+
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include>
+)
+
+export(PACKAGE ${PROJECT_NAME})
+
+
+export(TARGETS ${PROJECT_NAME}
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
+)
+
+configure_file(
+    "../CMakeModules/${PROJECT_NAME}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    COPYONLY
+)
