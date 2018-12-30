@@ -8,7 +8,8 @@ add_compile_options(-std=c++14 -Wall -Wno-unused-function -Wno-unused-variable
 # Don't follow symlinks when FILE GLOB_RECURSE (and don't warn)
 cmake_policy(SET CMP0009 NEW)
 
-set(CUDA_HOST_COMPILER "/usr/bin/g++-4.9")
+set(CUDA_HOST_COMPILER "/usr/bin/g++-4.9" CACHE STRING "The cuda host compiler")
+
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
 # OpenMP
