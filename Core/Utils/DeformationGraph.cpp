@@ -146,11 +146,11 @@ void DeformationGraph::setPosesSeq(std::vector<unsigned long long int>* poseTime
 
     imin = std::min(imin, (int)sampledGraphTimes.size() - 1);
 
-    if (abs(sampledGraphTimes[imin] - poseTime) <= abs(sampledGraphTimes[imid] - poseTime) &&
-        abs(sampledGraphTimes[imin] - poseTime) <= abs(sampledGraphTimes[imax] - poseTime)) {
+    if (std::abs(sampledGraphTimes[imin] - poseTime) <= std::abs(sampledGraphTimes[imid] - poseTime) &&
+        std::abs(sampledGraphTimes[imin] - poseTime) <= std::abs(sampledGraphTimes[imax] - poseTime)) {
       foundIndex = imin;
-    } else if (abs(sampledGraphTimes[imid] - poseTime) <= abs(sampledGraphTimes[imin] - poseTime) &&
-               abs(sampledGraphTimes[imid] - poseTime) <= abs(sampledGraphTimes[imax] - poseTime)) {
+    } else if (std::abs(sampledGraphTimes[imid] - poseTime) <= std::abs(sampledGraphTimes[imin] - poseTime) &&
+               std::abs(sampledGraphTimes[imid] - poseTime) <= std::abs(sampledGraphTimes[imax] - poseTime)) {
       foundIndex = imid;
     } else {
       foundIndex = imax;
@@ -273,11 +273,11 @@ void DeformationGraph::weightVerticesSeq(std::vector<unsigned long long int>* ve
 
     imin = std::min(imin, (int)sampledGraphTimes.size() - 1);
 
-    if (abs(sampledGraphTimes[imin] - vertexTime) <= abs(sampledGraphTimes[imid] - vertexTime) &&
-        abs(sampledGraphTimes[imin] - vertexTime) <= abs(sampledGraphTimes[imax] - vertexTime)) {
+    if (std::abs(sampledGraphTimes[imin] - vertexTime) <= std::abs(sampledGraphTimes[imid] - vertexTime) &&
+        std::abs(sampledGraphTimes[imin] - vertexTime) <= std::abs(sampledGraphTimes[imax] - vertexTime)) {
       foundIndex = imin;
-    } else if (abs(sampledGraphTimes[imid] - vertexTime) <= abs(sampledGraphTimes[imin] - vertexTime) &&
-               abs(sampledGraphTimes[imid] - vertexTime) <= abs(sampledGraphTimes[imax] - vertexTime)) {
+    } else if (std::abs(sampledGraphTimes[imid] - vertexTime) <= std::abs(sampledGraphTimes[imin] - vertexTime) &&
+               std::abs(sampledGraphTimes[imid] - vertexTime) <= std::abs(sampledGraphTimes[imax] - vertexTime)) {
       foundIndex = imid;
     } else {
       foundIndex = imax;
