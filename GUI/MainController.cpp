@@ -415,7 +415,9 @@ void MainController::run() {
       coFusion->predict();
 
       // TODO Only if relevant setting changed (Deactivate when writing (debug/visualisation) images to hd
-      if (logReader->getFrameData().timestamp) coFusion->performSegmentation(logReader->getFrameData());
+      if (logReader->getFrameData().timestamp && (logReader->getFrameData().rgb.size().area()!=0)) {
+        coFusion->performSegmentation(logReader->getFrameData());
+      }
     }
 
     TICK("GUI");
