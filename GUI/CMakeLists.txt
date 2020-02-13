@@ -83,3 +83,10 @@ target_include_directories(CoFusionTools PUBLIC
                             ${OpenCV_INCLUDE_DIRS}
                             ${BOOST_INCLUDE_DIRS}
 )
+
+include(GNUInstallDirs)
+
+# install executable
+install(TARGETS CoFusion EXPORT cofusion
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

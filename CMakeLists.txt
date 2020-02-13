@@ -47,3 +47,9 @@ add_subdirectory(GUI)
 # -- show all files
 file(GLOB_RECURSE showfiles Core/* GUI/*)
 add_custom_target(showthings SOURCES ${showfiles})
+
+# export library
+install(EXPORT cofusion
+    DESTINATION share/${PROJECT_NAME}/cmake
+    FILE ${PROJECT_NAME}Config.cmake
+)
