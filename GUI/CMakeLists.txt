@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6.0)
+cmake_minimum_required(VERSION 3.5)
 
 project(cofusion-gui)
 
@@ -10,9 +10,9 @@ find_package(CUDA REQUIRED)
 find_package(OpenNI2 REQUIRED)
 find_package(OpenCV 3.1 REQUIRED )
 find_package(Boost 1.58.0 REQUIRED)
+find_package(JPEG REQUIRED)
 
 include_directories(${ZLIB_INCLUDE_DIR})
-include_directories(${EIGEN_INCLUDE_DIRS})
 include_directories(${CUDA_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Core)
 include_directories(${OPENNI2_INCLUDE_DIR})
@@ -22,7 +22,6 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 message("Include-directories: ")
 message("ZLIB_INCLUDE_DIR: ${ZLIB_INCLUDE_DIR}")
-message("EIGEN_INCLUDE_DIRS: ${EIGEN_INCLUDE_DIRS}")
 message("CUDA_INCLUDE_DIRS: ${CUDA_INCLUDE_DIRS}")
 message("OPENNI2_INCLUDE_DIR: ${OPENNI2_INCLUDE_DIR}")
 message("CMAKE_CURRENT_SOURCE_DIR/../Core: ${${CMAKE_CURRENT_SOURCE_DIR}/../Core}")
@@ -57,6 +56,8 @@ target_link_libraries(CoFusion
                       boost_filesystem
                       boost_system
                       pthread
+                      gSLICr_lib # this should be included by target 'cofusion'
+                      ${JPEG_LIBRARIES}
 )
 
 add_library(CoFusionTools SHARED

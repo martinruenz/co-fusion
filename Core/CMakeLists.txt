@@ -14,6 +14,7 @@ find_package(CUDA REQUIRED)
 find_package(SuiteSparse REQUIRED)
 find_package(OpenCV 3.1 REQUIRED)
 find_package(OpenMP)
+find_package(Eigen3 REQUIRED NO_MODULE)
 
 if(PCL_FOUND)
     # See: https://github.com/PointCloudLibrary/pcl/issues/776
@@ -55,27 +56,20 @@ add_definitions(-DSHOW_DEBUG_VISUALISATION)
 endif()
 
 ## Directories
-set(DENSECRF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../deps/densecrf")
-set(DENSECRF_LIBRARY_DIRS "${DENSECRF_DIR}/build/src/")
-set(DENSECRF_INCLUDE_DIRS "${DENSECRF_DIR}/include")
-set(DENSECRF_LIBRARIES densecrf)
+find_package(densecrf REQUIRED)
 set(cofusion_SHADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders" CACHE PATH "Where the shaders live")
 
 message("Directories: ")
-message("DENSECRF_DIR: ${DENSECRF_DIR}")
 message("cofusion_SHADER_DIR: ${cofusion_SHADER_DIR}")
 
 ## Includes
 include_directories(${Pangolin_INCLUDE_DIRS})
 include_directories(${CUDA_INCLUDE_DIRS})
-include_directories(${EIGEN_INCLUDE_DIRS})
 include_directories(${SUITESPARSE_INCLUDE_DIRS})
-include_directories(${DENSECRF_INCLUDE_DIRS})
 include_directories(${PCL_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 link_directories(${PCL_LIBRARY_DIRS})
-link_directories(${DENSECRF_LIBRARY_DIRS})
 
 
 file(GLOB srcs *.cpp)
@@ -121,12 +115,10 @@ add_library(${PROJECT_NAME} SHARED
     ${cuda_objs}
     ${containers}
     ${segmentation}
-    #${pangolin_headers} #TODO Remove
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${GSLICR_DIR}/gSLICr_Lib
     ${ZLIB_INCLUDE_DIR}
     ${Pangolin_INCLUDE_DIRS}
     ${CUDA_INCLUDE_DIRS}
@@ -137,8 +129,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME}
     gSLICr_lib
-    ${DENSECRF_LIBRARIES}
-    ${Eigen_LIBRARIES}
+    densecrf
     ${Pangolin_LIBRARIES}
     ${CUDA_LIBRARIES}
     ${SUITESPARSE_LIBRARIES}

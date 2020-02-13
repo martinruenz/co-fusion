@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.1.0)
 
+set(CMAKE_CXX_STANDARD 14)
+
 # Warnings / Errors
-add_compile_options(-std=c++14 -Wall -Wno-unused-function -Wno-unused-variable
+add_compile_options(-Wall -Wno-unused-function -Wno-unused-variable
   -Wno-unused-but-set-variable -Wno-unused-but-set-variable -Wno-write-strings
   -Wno-deprecated -Wno-deprecated-declarations -Werror -Wno-unknown-pragmas)
 
 # Don't follow symlinks when FILE GLOB_RECURSE (and don't warn)
 cmake_policy(SET CMP0009 NEW)
 
-set(CUDA_HOST_COMPILER "/usr/bin/g++-4.9")
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
 # OpenMP
@@ -25,19 +26,14 @@ include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
 # gSLICr
-set(GSLICR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/gSLICr")
-include_directories(${GSLICR_DIR}/gSLICr_Lib)
-link_directories(${GSLICR_DIR}/build)
+find_package(gSLICr REQUIRED)
 
 # Pangolin
-find_package(Pangolin 0.1 REQUIRED)
-message("Pangolin_INCLUDE_DIRS: ${Pangolin_INCLUDE_DIRS}")
+find_package(Pangolin 0.5 REQUIRED)
 include_directories(${Pangolin_INCLUDE_DIRS})
 
 # Eigen3
-find_package(PkgConfig)
-pkg_search_module(Eigen3 REQUIRED eigen3)
-include_directories(${Eigen3_INCLUDE_DIRS})
+find_package (Eigen3 REQUIRED NO_MODULE)
 
 # project-wide paths
 include_directories(${PROJECT_SOURCE_DIR})
