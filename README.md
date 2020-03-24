@@ -83,3 +83,6 @@ The overall architecture and terminal-interface of Co-Fusion is based on [Elasti
 * **-en**:            Export normal images
 * **-ep**:            Export poses after finishing run (just before quitting if '-q')
 * **-or**:            Outlier rejection strength (default 3).
+
+## Acknowledgements
+This work has been supported by the SecondHands project, funded from the EU Horizon 2020 Research and Innovation programme under grant agreement No 643950.
