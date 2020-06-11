@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-# policy to export a different link interface
-cmake_policy(SET CMP0022 OLD)
-
 project(cofusion)
 
 message("Evaluating Core/CMAKE")
@@ -139,7 +136,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+set_target_properties(${PROJECT_NAME} PROPERTIES INTERFACE_LINK_LIBRARIES "")
 
 
 
