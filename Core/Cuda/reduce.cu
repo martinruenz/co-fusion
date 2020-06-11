@@ -388,7 +388,7 @@ struct ICPReduction
                             row[5] * row[6],
 
                             row[6] * row[6],
-                            found_coresp};
+                            float(found_coresp)};
 
         return values;
     }
@@ -598,7 +598,7 @@ struct RGBReduction
                             row[5] * row[6],
 
                             row[6] * row[6],
-                            found_coresp};
+                            float(found_coresp)};
 
         return values;
     }
@@ -1012,7 +1012,7 @@ struct SO3Reduction
 
         bool found_coresp = false;
 
-        float3 unwarpedReferencePoint = {x, y, 1.0f};
+        float3 unwarpedReferencePoint = {float(x), float(y), 1.0f};
 
         float3 warpedReferencePoint = imageBasis * unwarpedReferencePoint;
 
@@ -1084,7 +1084,7 @@ struct SO3Reduction
                             row[2] * row[3],
 
                             row[3] * row[3],
-                            found_coresp};
+                            float(found_coresp)};
 
         return values;
     }
