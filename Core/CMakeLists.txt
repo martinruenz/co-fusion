@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 
 project(cofusion)
 
-message("Evaluating Core/CMAKE")
+message(STATUS "Evaluating Core/CMAKE")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
 
@@ -29,7 +29,7 @@ if(PCL_FOUND)
         remove_definitions(-D${d})
     endforeach()
 
-    message("With PCL registration.")
+    message(STATUS "With PCL registration.")
     add_definitions(-DWITH_PCL)
     add_definitions(${PCL_DEFINITIONS})
 endif()
@@ -43,14 +43,14 @@ endif()
 
 # Max number of surfels
 if(DEFINED COFUSION_NUM_SURFELS)
-message("COFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS}")
+message(STATUS "COFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS}")
 add_definitions(-DCOFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS})
 endif()
 
 # Show debug visualisations
 option(SHOW_DEBUG_VISUALISATION "Show debug visualisation" OFF)
 if(SHOW_DEBUG_VISUALISATION)
-message("SHOW_DEBUG_VISUALISATION enabled")
+message(STATUS "SHOW_DEBUG_VISUALISATION enabled")
 add_definitions(-DSHOW_DEBUG_VISUALISATION)
 endif()
 
@@ -58,8 +58,8 @@ endif()
 find_package(densecrf REQUIRED)
 set(cofusion_SHADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders" CACHE PATH "Where the shaders live")
 
-message("Directories: ")
-message("cofusion_SHADER_DIR: ${cofusion_SHADER_DIR}")
+message(STATUS "Directories: ")
+message(STATUS "cofusion_SHADER_DIR: ${cofusion_SHADER_DIR}")
 
 ## Includes
 include_directories(${Pangolin_INCLUDE_DIRS})
@@ -98,9 +98,9 @@ CUDA_COMPILE(cuda_objs ${cuda})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -msse -msse2 -msse3 -DSHADER_DIR=${cofusion_SHADER_DIR}")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-    message("Debug build.")
+    message(STATUS "Debug build.")
 else(CMAKE_BUILD_TYPE MATCHES Release)
-    message("Release build.")
+    message(STATUS "Release build.")
     add_compile_options(-O3)
     add_compile_options(-Wno-maybe-uninitialized)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
