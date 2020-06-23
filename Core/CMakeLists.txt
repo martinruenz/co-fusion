@@ -138,7 +138,8 @@ target_link_libraries(${PROJECT_NAME}
 
 set_target_properties(${PROJECT_NAME} PROPERTIES INTERFACE_LINK_LIBRARIES "")
 
-
+# deactivate 'class-memaccess' error for direct memcpy of list of 'Eigen::Vector4f'
+target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=class-memaccess")
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC
