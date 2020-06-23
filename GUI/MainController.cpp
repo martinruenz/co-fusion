@@ -244,26 +244,28 @@ MainController::MainController(int argc, char* argv[])
   resizeStream = new GPUResize(Resolution::getInstance().width(), Resolution::getInstance().height(), Resolution::getInstance().width() / 2,
                                Resolution::getInstance().height() / 2);
 
-  if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
-    if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
-  } else {
-    if (boost::filesystem::exists(logFile)) {
-      // TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
-      exportDir = baseDir + logFile + "-export/";
+  if (exportLabels | exportNormals | exportViewport) {
+    if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
+      if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
     } else {
-      exportDir = baseDir + "-export/";
+      if (boost::filesystem::exists(logFile)) {
+        // TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
+        exportDir = baseDir + logFile + "-export/";
+      } else {
+        exportDir = baseDir + "-export/";
+      }
     }
+    exportDir += "/";
+
+    // Create export dir if it doesn't exist
+    boost::filesystem::path eDir(exportDir);
+    boost::filesystem::create_directory(eDir);
+
+    std::cout << "Initialised MainController. Frame resolution is set to: " << Resolution::getInstance().width() << "x"
+              << Resolution::getInstance().height() << "\n"
+                                                       "Exporting results to: "
+              << exportDir << std::endl;
   }
-  exportDir += "/";
-
-  // Create export dir if it doesn't exist
-  boost::filesystem::path eDir(exportDir);
-  boost::filesystem::create_directory(eDir);
-
-  std::cout << "Initialised MainController. Frame resolution is set to: " << Resolution::getInstance().width() << "x"
-            << Resolution::getInstance().height() << "\n"
-                                                     "Exporting results to: "
-            << exportDir << std::endl;
 }
 
 MainController::~MainController() {
