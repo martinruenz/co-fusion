@@ -11,7 +11,7 @@ include(GNUInstallDirs)
 ## External packages
 find_package(CUDA REQUIRED)
 find_package(SuiteSparse REQUIRED)
-find_package(OpenCV 3.1 REQUIRED)
+find_package(OpenCV REQUIRED)
 find_package(OpenMP)
 find_package(Eigen3 REQUIRED NO_MODULE)
 

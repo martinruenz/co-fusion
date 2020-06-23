@@ -20,7 +20,7 @@ if (OPENMP_FOUND)
 endif()
 
 # boost
-find_package(Boost 1.58.0 REQUIRED)
+find_package(Boost REQUIRED)
 message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
