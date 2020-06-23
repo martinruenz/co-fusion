@@ -53,7 +53,7 @@
 #include "convenience.cuh"
 #include "operators.cuh"
 
-#if __CUDA_ARCH__ < 300
+#if __CUDA_ARCH__ < 300 || __CUDA_ARCH__ > 700
 __inline__ __device__
 float __shfl_down(float val, int offset, int width = 32)
 {
