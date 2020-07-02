@@ -136,7 +136,7 @@ class Slic {
     assert(input.isContinuous());
     assert(input.total() == spixelNum);
 
-    cv::Mat result = cv::Mat(slicInput->noDims[1], slicInput->noDims[0], cv::DataType<Tout>::type);
+    cv::Mat result = cv::Mat(slicInput->noDims[1], slicInput->noDims[0], cv::traits::Type<Tout>::value);
     Tout* resData = (Tout*)result.data;
     Tin* inData = (Tin*)input.data;
 
@@ -173,7 +173,7 @@ class Slic {
     if (image.type() == CV_8UC3)
       image.copyTo(res);
     else if (image.type() == CV_8UC1)
-      cv::cvtColor(image, res, CV_GRAY2RGB);
+      cv::cvtColor(image, res, cv::COLOR_GRAY2RGB);
     else
       assert(0);
     if (swapRedBlue) cv::cvtColor(res, res, cv::COLOR_RGB2BGR);
