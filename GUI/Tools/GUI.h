@@ -268,6 +268,7 @@ class GUI {
     pangolin::RegisterKeyPressCallback('q', [&]() { savePoses->Ref().Set(true); });
     pangolin::RegisterKeyPressCallback('w', [&]() { saveCloud->Ref().Set(true); });
     pangolin::RegisterKeyPressCallback('e', [&]() { saveView->Ref().Set(true); });
+    pangolin::RegisterKeyPressCallback('s', [&]() { step->Ref().Set(true); });
   }
 
   virtual ~GUI() {
