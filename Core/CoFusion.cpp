@@ -753,6 +753,7 @@ void CoFusion::savePly() {
   };
 
   for (auto& m : models) exportModelPLY(m);
+  for (auto& m : inactiveModels) exportModelPLY(m);
 }
 
 void CoFusion::exportPoses() {
