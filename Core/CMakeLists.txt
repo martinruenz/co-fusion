@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-# policy to export a different link interface
-cmake_policy(SET CMP0022 OLD)
-
 project(cofusion)
 
-message("Evaluating Core/CMAKE")
+message(STATUS "Evaluating Core/CMAKE")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
+
+include(GNUInstallDirs)
 
 ## External packages
 find_package(CUDA REQUIRED)
 find_package(SuiteSparse REQUIRED)
-find_package(OpenCV 3.1 REQUIRED)
+find_package(OpenCV REQUIRED)
 find_package(OpenMP)
+find_package(Eigen3 REQUIRED NO_MODULE)
 
 if(PCL_FOUND)
     # See: https://github.com/PointCloudLibrary/pcl/issues/776
@@ -29,7 +29,7 @@ if(PCL_FOUND)
         remove_definitions(-D${d})
     endforeach()
 
-    message("With PCL registration.")
+    message(STATUS "With PCL registration.")
     add_definitions(-DWITH_PCL)
     add_definitions(${PCL_DEFINITIONS})
 endif()
@@ -43,39 +43,32 @@ endif()
 
 # Max number of surfels
 if(DEFINED COFUSION_NUM_SURFELS)
-message("COFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS}")
+message(STATUS "COFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS}")
 add_definitions(-DCOFUSION_NUM_SURFELS=${COFUSION_NUM_SURFELS})
 endif()
 
 # Show debug visualisations
 option(SHOW_DEBUG_VISUALISATION "Show debug visualisation" OFF)
 if(SHOW_DEBUG_VISUALISATION)
-message("SHOW_DEBUG_VISUALISATION enabled")
+message(STATUS "SHOW_DEBUG_VISUALISATION enabled")
 add_definitions(-DSHOW_DEBUG_VISUALISATION)
 endif()
 
 ## Directories
-set(DENSECRF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../deps/densecrf")
-set(DENSECRF_LIBRARY_DIRS "${DENSECRF_DIR}/build/src/")
-set(DENSECRF_INCLUDE_DIRS "${DENSECRF_DIR}/include")
-set(DENSECRF_LIBRARIES densecrf)
+find_package(densecrf REQUIRED)
 set(cofusion_SHADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders" CACHE PATH "Where the shaders live")
 
-message("Directories: ")
-message("DENSECRF_DIR: ${DENSECRF_DIR}")
-message("cofusion_SHADER_DIR: ${cofusion_SHADER_DIR}")
+message(STATUS "Directories: ")
+message(STATUS "cofusion_SHADER_DIR: ${cofusion_SHADER_DIR}")
 
 ## Includes
 include_directories(${Pangolin_INCLUDE_DIRS})
 include_directories(${CUDA_INCLUDE_DIRS})
-include_directories(${EIGEN_INCLUDE_DIRS})
 include_directories(${SUITESPARSE_INCLUDE_DIRS})
-include_directories(${DENSECRF_INCLUDE_DIRS})
 include_directories(${PCL_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 link_directories(${PCL_LIBRARY_DIRS})
-link_directories(${DENSECRF_LIBRARY_DIRS})
 
 
 file(GLOB srcs *.cpp)
@@ -86,7 +79,7 @@ file(GLOB cuda Cuda/*.cu)
 file(GLOB containers Cuda/containers/*.cpp)
 file(GLOB segmentation Segmentation/*.cpp)
 
-set(CUDA_ARCH_BIN "20 30 35 50 52 61" CACHE STRING "Specify 'real' GPU arch to build binaries for, BIN(PTX) format is supported. Example: 1.3 2.1(1.3) or 13 21(13)")
+set(CUDA_ARCH_BIN "" CACHE STRING "Specify 'real' GPU arch to build binaries for, BIN(PTX) format is supported. Example: 1.3 2.1(1.3) or 13 21(13)")
 set(CUDA_ARCH_PTX "" CACHE STRING "Specify 'virtual' PTX arch to build PTX intermediate code for. Example: 1.0 1.2 or 10 12")
 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
@@ -105,9 +98,9 @@ CUDA_COMPILE(cuda_objs ${cuda})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -msse -msse2 -msse3 -DSHADER_DIR=${cofusion_SHADER_DIR}")
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-    message("Debug build.")
+    message(STATUS "Debug build.")
 else(CMAKE_BUILD_TYPE MATCHES Release)
-    message("Release build.")
+    message(STATUS "Release build.")
     add_compile_options(-O3)
     add_compile_options(-Wno-maybe-uninitialized)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -121,12 +114,10 @@ add_library(${PROJECT_NAME} SHARED
     ${cuda_objs}
     ${containers}
     ${segmentation}
-    #${pangolin_headers} #TODO Remove
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${GSLICR_DIR}/gSLICr_Lib
     ${ZLIB_INCLUDE_DIR}
     ${Pangolin_INCLUDE_DIRS}
     ${CUDA_INCLUDE_DIRS}
@@ -137,8 +128,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME}
     gSLICr_lib
-    ${DENSECRF_LIBRARIES}
-    ${Eigen_LIBRARIES}
+    densecrf
     ${Pangolin_LIBRARIES}
     ${CUDA_LIBRARIES}
     ${SUITESPARSE_LIBRARIES}
@@ -146,9 +136,10 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+set_target_properties(${PROJECT_NAME} PROPERTIES INTERFACE_LINK_LIBRARIES "")
 
-
+# deactivate 'class-memaccess' error for direct memcpy of list of 'Eigen::Vector4f'
+target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-error=class-memaccess")
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -167,4 +158,10 @@ configure_file(
     "../CMakeModules/${PROJECT_NAME}Config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
     COPYONLY
+)
+
+# install library
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )

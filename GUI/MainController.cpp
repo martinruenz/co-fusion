@@ -26,6 +26,8 @@
 #include <boost/algorithm/string.hpp>
 #include <GUI/Tools/PangolinReader.h>
 
+#include <filesystem>
+
 /*
  * Parameters:
 
@@ -244,26 +246,30 @@ MainController::MainController(int argc, char* argv[])
   resizeStream = new GPUResize(Resolution::getInstance().width(), Resolution::getInstance().height(), Resolution::getInstance().width() / 2,
                                Resolution::getInstance().height() / 2);
 
-  if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
-    if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
-  } else {
-    if (boost::filesystem::exists(logFile)) {
-      // TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
-      exportDir = baseDir + logFile + "-export/";
+  if (exportLabels | exportNormals | exportViewport) {
+    if (Parse::get().arg(argc, argv, "-exportdir", exportDir) > 0) {
+      if (exportDir.length() == 0 || exportDir[0] != '/') exportDir = baseDir + exportDir;
     } else {
-      exportDir = baseDir + "-export/";
+      if (boost::filesystem::exists(logFile)) {
+        // TODO: this is bound to fail if logFile is not in the baseDir or the path is not relative
+        exportDir = baseDir + logFile + "-export/";
+      } else {
+        exportDir = baseDir + "-export/";
+      }
     }
-  }
-  exportDir += "/";
+    exportDir += "/";
 
-  // Create export dir if it doesn't exist
-  boost::filesystem::path eDir(exportDir);
-  boost::filesystem::create_directory(eDir);
+    // Create export dir if it doesn't exist
+    boost::filesystem::path eDir(exportDir);
+    boost::filesystem::create_directory(eDir);
+  }
+
+  if (exportDir.empty()) {
+    exportDir = std::filesystem::temp_directory_path() / "";
+  }
 
   std::cout << "Initialised MainController. Frame resolution is set to: " << Resolution::getInstance().width() << "x"
-            << Resolution::getInstance().height() << "\n"
-                                                     "Exporting results to: "
-            << exportDir << std::endl;
+            << Resolution::getInstance().height() << std::endl << "Exporting results to: " << exportDir << std::endl;
 }
 
 MainController::~MainController() {
@@ -415,7 +421,9 @@ void MainController::run() {
       coFusion->predict();
 
       // TODO Only if relevant setting changed (Deactivate when writing (debug/visualisation) images to hd
-      if (logReader->getFrameData().timestamp) coFusion->performSegmentation(logReader->getFrameData());
+      if (logReader->getFrameData().timestamp && (logReader->getFrameData().rgb.size().area()!=0)) {
+        coFusion->performSegmentation(logReader->getFrameData());
+      }
     }
 
     TICK("GUI");
