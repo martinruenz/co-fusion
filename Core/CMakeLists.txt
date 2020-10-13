@@ -102,7 +102,6 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 else(CMAKE_BUILD_TYPE MATCHES Release)
     message(STATUS "Release build.")
     add_compile_options(-O3)
-    add_compile_options(-Wno-maybe-uninitialized)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_library(${PROJECT_NAME} SHARED
