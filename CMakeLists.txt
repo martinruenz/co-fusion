@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # Warnings / Errors
 add_compile_options(-Wall -Werror -Wno-unused-variable -Wno-write-strings
-  -Wno-deprecated -Wno-deprecated-declarations)
+  -Wno-deprecated-declarations)
 
 # Don't follow symlinks when FILE GLOB_RECURSE (and don't warn)
 cmake_policy(SET CMP0009 NEW)
