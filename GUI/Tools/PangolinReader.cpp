@@ -45,7 +45,7 @@ void PangolinReader::configureConversion(pangolin::StreamInfo& stream, bool& con
   bufferCursor += stream.SizeBytes();
 }
 
-static bool continue_showing = true;
+// static bool continue_showing = true;
 void PangolinReader::getNext() {
   lastFrameRetrieved = true;
   if (!initialized) {

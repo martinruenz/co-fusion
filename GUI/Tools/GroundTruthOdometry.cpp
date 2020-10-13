@@ -34,6 +34,9 @@ void GroundTruthOdometry::loadTrajectory(const std::string& filename) {
 
     if (file.eof()) break;
 
+#ifdef NDEBUG
+    (void) n;
+#endif
     assert(n == 8);
 
     Eigen::Quaternionf q(qw, qx, qy, qz);

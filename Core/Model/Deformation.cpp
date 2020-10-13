@@ -25,12 +25,9 @@ Deformation::Deformation()
       sampleProgram(loadProgramGeomFromFile("sample.vert", "sample.geom")),
       bufferSize(1024),  // max nodes basically
       count(0),
-      vertices(new Eigen::Vector4f[bufferSize]),
+      vertices(size_t(bufferSize)),
       graphPosePoints(new std::vector<Eigen::Vector3f>),
       lastDeformTime(0) {
-  // x, y, z and init time
-  memset(&vertices[0], 0, bufferSize);
-
   glGenTransformFeedbacks(1, &fid);
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -51,7 +48,6 @@ Deformation::Deformation()
 }
 
 Deformation::~Deformation() {
-  delete[] vertices;
   glDeleteTransformFeedbacks(1, &fid);
   glDeleteBuffers(1, &vbo);
   glDeleteQueries(1, &countQuery);
@@ -252,7 +248,7 @@ void Deformation::sampleGraphModel(const OutputBuffer& model) {
   if ((int)count > def.k) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Eigen::Vector4f) * count, vertices);
+    glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Eigen::Vector4f) * count, vertices.data());
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 

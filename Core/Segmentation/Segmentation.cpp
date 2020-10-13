@@ -147,7 +147,6 @@ SegmentationResult Segmentation::performSegmentationCRF(std::list<std::shared_pt
   const unsigned lowWidth = result.lowRGB.cols;
   const unsigned lowHeight = result.lowRGB.rows;
   const unsigned lowTotal = result.lowRGB.total();
-  const unsigned fullTotal = frame.rgb.total();
   const unsigned fullWidth = frame.rgb.cols;
   const unsigned fullHeight = frame.rgb.rows;
 

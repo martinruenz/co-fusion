@@ -79,8 +79,9 @@ bool Ferns::addFrame(GPUTexture* imageTexture, GPUTexture* vertexTexture, GPUTex
   resize.vertex(vertexTexture, verts);
   resize.vertex(normalTexture, norms);
 
-  Frame* frame = new Frame(num, frames.size(), pose, srcTime, width * height, (unsigned char*)img.data, (Eigen::Vector4f*)verts.data,
-                           (Eigen::Vector4f*)norms.data);
+  Frame* frame = new Frame(num, frames.size(), pose, srcTime, width * height, (unsigned char*)img.data,
+                           std::vector<Eigen::Vector4f>(verts.data, verts.data + (width * height)),
+                           std::vector<Eigen::Vector4f>(norms.data, norms.data + (width * height)));
 
   int* coOccurrences = new int[frames.size()];
 
@@ -202,10 +203,10 @@ Eigen::Matrix4f Ferns::findFrame(std::vector<SurfaceConstraint>& constraints, co
   if (minId != -1 && blockHDAware(frame, frames.at(minId)) > 0.3) {
     Eigen::Matrix4f fernPose = frames.at(minId)->pose;
 
-    vertFern.texture->Upload(frames.at(minId)->initVerts, GL_RGBA, GL_FLOAT);
+    vertFern.texture->Upload(frames.at(minId)->initVerts.data(), GL_RGBA, GL_FLOAT);
     vertCurrent.texture->Upload(vertSmall.data, GL_RGBA, GL_FLOAT);
 
-    normFern.texture->Upload(frames.at(minId)->initNorms, GL_RGBA, GL_FLOAT);
+    normFern.texture->Upload(frames.at(minId)->initNorms.data(), GL_RGBA, GL_FLOAT);
     normCurrent.texture->Upload(normSmall.data, GL_RGBA, GL_FLOAT);
 
     //        colorFern.texture->Upload(frames.at(minId)->initRgb, GL_RGB, GL_UNSIGNED_BYTE);

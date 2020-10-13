@@ -72,7 +72,7 @@ class GUI {
     windowParams.Set("SAMPLE_BUFFERS", 0);
     windowParams.Set("SAMPLES", 0);
 
-    pangolin::CreateWindowAndBind("Main", width, height, windowParams);
+    pangolin::CreateWindowAndBind("Co-Fusion", width, height, windowParams);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -268,6 +268,7 @@ class GUI {
     pangolin::RegisterKeyPressCallback('q', [&]() { savePoses->Ref().Set(true); });
     pangolin::RegisterKeyPressCallback('w', [&]() { saveCloud->Ref().Set(true); });
     pangolin::RegisterKeyPressCallback('e', [&]() { saveView->Ref().Set(true); });
+    pangolin::RegisterKeyPressCallback('s', [&]() { step->Ref().Set(true); });
   }
 
   virtual ~GUI() {
