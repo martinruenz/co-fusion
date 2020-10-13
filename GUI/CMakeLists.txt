@@ -62,9 +62,6 @@ target_link_libraries(CoFusion
                       ${JPEG_LIBRARIES}
 )
 
-# deactivate 'class-memaccess' error for direct memcpy of list of 'Eigen::Vector4f'
-target_compile_options(CoFusion PRIVATE "-Wno-error=class-memaccess")
-
 add_library(CoFusionTools SHARED
             ${tools_srcs})
 

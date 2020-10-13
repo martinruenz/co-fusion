@@ -76,7 +76,7 @@ class Deformation {
                  /*std::vector<std::pair<unsigned long long int, Eigen::Matrix4f> > & poseGraph,*/
                  const bool relaxGraph, std::vector<Constraint>* newRelativeCons = 0);
 
-  Eigen::Vector4f* getVertices() { return vertices; }
+  Eigen::Vector4f* getVertices() { return vertices.data(); }
 
   int getCount() { return int(count); }
 
@@ -96,7 +96,7 @@ class Deformation {
   const int bufferSize;
   GLuint countQuery;
   unsigned int count;
-  Eigen::Vector4f* vertices;
+  std::vector<Eigen::Vector4f> vertices;  // x, y, z and init time
 
   std::vector<std::pair<uint64_t, Eigen::Vector3f> > poseGraphPoints;
   std::vector<unsigned long long int> graphPoseTimes;
