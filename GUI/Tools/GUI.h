@@ -67,12 +67,7 @@ class GUI {
 
     width += widthPanel;
 
-    pangolin::Params windowParams;
-
-    windowParams.Set("SAMPLE_BUFFERS", 0);
-    windowParams.Set("SAMPLES", 0);
-
-    pangolin::CreateWindowAndBind("Co-Fusion", width, height, windowParams);
+    pangolin::CreateWindowAndBind("Co-Fusion", width, height);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -260,15 +255,15 @@ class GUI {
       pangolin::RegisterKeyPressCallback(' ', pangolin::SetVarFunctor<bool>("ui.Reset", true));
     }
 
-    pangolin::RegisterKeyPressCallback('p', [&]() { pause->Ref().Set(!pause->Get()); });
-    pangolin::RegisterKeyPressCallback('c', [&]() { drawColors->Ref().Set(!drawColors->Get()); });
-    pangolin::RegisterKeyPressCallback('l', [&]() { drawLabelColors->Ref().Set(!drawLabelColors->Get()); });
-    pangolin::RegisterKeyPressCallback('x', [&]() { drawFxaa->Ref().Set(!drawFxaa->Get()); });
-    pangolin::RegisterKeyPressCallback('f', [&]() { followPose->Ref().Set(!followPose->Get()); });
-    pangolin::RegisterKeyPressCallback('q', [&]() { savePoses->Ref().Set(true); });
-    pangolin::RegisterKeyPressCallback('w', [&]() { saveCloud->Ref().Set(true); });
-    pangolin::RegisterKeyPressCallback('e', [&]() { saveView->Ref().Set(true); });
-    pangolin::RegisterKeyPressCallback('s', [&]() { step->Ref().Set(true); });
+    pangolin::RegisterKeyPressCallback('p', [&]() { pause->Ref()->Set(!pause->Get()); });
+    pangolin::RegisterKeyPressCallback('c', [&]() { drawColors->Ref()->Set(!drawColors->Get()); });
+    pangolin::RegisterKeyPressCallback('l', [&]() { drawLabelColors->Ref()->Set(!drawLabelColors->Get()); });
+    pangolin::RegisterKeyPressCallback('x', [&]() { drawFxaa->Ref()->Set(!drawFxaa->Get()); });
+    pangolin::RegisterKeyPressCallback('f', [&]() { followPose->Ref()->Set(!followPose->Get()); });
+    pangolin::RegisterKeyPressCallback('q', [&]() { savePoses->Ref()->Set(true); });
+    pangolin::RegisterKeyPressCallback('w', [&]() { saveCloud->Ref()->Set(true); });
+    pangolin::RegisterKeyPressCallback('e', [&]() { saveView->Ref()->Set(true); });
+    pangolin::RegisterKeyPressCallback('s', [&]() { step->Ref()->Set(true); });
   }
 
   virtual ~GUI() {
