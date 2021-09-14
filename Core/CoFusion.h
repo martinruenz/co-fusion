@@ -39,7 +39,6 @@
 #include <list>
 #include <iomanip>
 #include <memory>
-#include <pangolin/gl/glcuda.h>
 
 class CoFusion {
  public:
