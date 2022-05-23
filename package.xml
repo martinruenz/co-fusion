@@ -43,16 +43,16 @@
   <buildtool_depend>cmake</buildtool_depend>
 
   <build_depend>eigen</build_depend>
-  <build_depend>gSLICr</build_depend>
+  <build_depend>gslicr</build_depend>
   <build_depend>densecrf</build_depend>
   <build_depend>libboost-dev</build_depend>
   <build_depend>pangolin</build_depend>
   <build_export_depend>eigen</build_export_depend>
-  <build_export_depend>gSLICr</build_export_depend>
+  <build_export_depend>gslicr</build_export_depend>
   <build_export_depend>libboost-dev</build_export_depend>
   <build_export_depend>pangolin</build_export_depend>
   <exec_depend>eigen</exec_depend>
-  <exec_depend>gSLICr</exec_depend>
+  <exec_depend>gslicr</exec_depend>
   <exec_depend>densecrf</exec_depend>
   <exec_depend>libboost-dev</exec_depend>
   <exec_depend>pangolin</exec_depend>
