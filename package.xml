@@ -48,17 +48,20 @@
   <build_depend>libboost-dev</build_depend>
   <build_depend>pangolin</build_depend>
   <build_depend>suitesparse</build_depend>
+  <build_depend>libopenni2-dev</build_depend>
   <build_export_depend>eigen</build_export_depend>
   <build_export_depend>gslicr</build_export_depend>
   <build_export_depend>libboost-dev</build_export_depend>
   <build_export_depend>pangolin</build_export_depend>
   <build_export_depend>suitesparse</build_export_depend>
+  <build_export_depend>libopenni2-dev</build_export_depend>
   <exec_depend>eigen</exec_depend>
   <exec_depend>gslicr</exec_depend>
   <exec_depend>densecrf</exec_depend>
   <exec_depend>libboost-dev</exec_depend>
   <exec_depend>pangolin</exec_depend>
   <exec_depend>suitesparse</exec_depend>
+  <exec_depend>libopenni2-dev</exec_depend>
 
   <export>
     <build_type>cmake</build_type>
