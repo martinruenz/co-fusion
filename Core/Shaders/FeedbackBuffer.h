@@ -25,7 +25,7 @@
 #include "../Utils/Resolution.h"
 #include "../Utils/Intrinsics.h"
 #include <pangolin/gl/gl.h>
-#include <pangolin/display/opengl_render_state.h>
+#include <pangolin/gl/opengl_render_state.h>
 
 /// A feedback buffer holds one vertex per pixel (see uvo)
 class FeedbackBuffer {

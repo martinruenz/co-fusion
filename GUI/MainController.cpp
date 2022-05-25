@@ -216,32 +216,32 @@ MainController::MainController(int argc, char* argv[])
   showcaseMode = Parse::get().arg(argc, argv, "-sc", empty) > -1;
   gui = new GUI(logFile.length() == 0, showcaseMode);
 
-  if (Parse::get().arg(argc, argv, "-d", tmpFloat) > -1) gui->depthCutoff->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-i", tmpFloat) > -1) gui->icpWeight->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-or", tmpFloat) > -1) gui->outlierCoefficient->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-segMinNew", tmpFloat) > -1) gui->minRelSizeNew->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-segMaxNew", tmpFloat) > -1) gui->maxRelSizeNew->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-crfRGB", tmpFloat) > -1) gui->pairwiseRGBSTD->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-crfDepth", tmpFloat) > -1) gui->pairwiseDepthSTD->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-crfPos", tmpFloat) > -1) gui->pairwisePosSTD->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-crfAppearance", tmpFloat) > -1) gui->pairwiseAppearanceWeight->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-crfSmooth", tmpFloat) > -1) gui->pairwiseSmoothnessWeight->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-offset", tmpFloat) > -1) gui->modelSpawnOffset->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-thNew", tmpFloat) > -1) gui->thresholdNew->Ref().Set(tmpFloat);
-  if (Parse::get().arg(argc, argv, "-k", tmpFloat) > -1) gui->unaryErrorK->Ref().Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-d", tmpFloat) > -1) gui->depthCutoff->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-i", tmpFloat) > -1) gui->icpWeight->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-or", tmpFloat) > -1) gui->outlierCoefficient->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-segMinNew", tmpFloat) > -1) gui->minRelSizeNew->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-segMaxNew", tmpFloat) > -1) gui->maxRelSizeNew->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-crfRGB", tmpFloat) > -1) gui->pairwiseRGBSTD->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-crfDepth", tmpFloat) > -1) gui->pairwiseDepthSTD->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-crfPos", tmpFloat) > -1) gui->pairwisePosSTD->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-crfAppearance", tmpFloat) > -1) gui->pairwiseAppearanceWeight->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-crfSmooth", tmpFloat) > -1) gui->pairwiseSmoothnessWeight->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-offset", tmpFloat) > -1) gui->modelSpawnOffset->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-thNew", tmpFloat) > -1) gui->thresholdNew->Ref()->Set(tmpFloat);
+  if (Parse::get().arg(argc, argv, "-k", tmpFloat) > -1) gui->unaryErrorK->Ref()->Set(tmpFloat);
 
-  gui->flipColors->Ref().Set(logReader->flipColors);
-  gui->rgbOnly->Ref().Set(false);
-  gui->enableMultiModel->Ref().Set(Parse::get().arg(argc, argv, "-static", empty) <= -1);
-  gui->enableSmartDelete->Ref().Set(Parse::get().arg(argc, argv, "-keep", empty) <= -1);
-  gui->pyramid->Ref().Set(true);
-  gui->fastOdom->Ref().Set(fastOdom);
-  // gui->confidenceThreshold->Ref().Set(confidence);
-  gui->so3->Ref().Set(so3);
-  gui->frameToFrameRGB->Ref().Set(frameToFrameRGB);
-  gui->pause->Ref().Set((Parse::get().arg(argc, argv, "-run", empty) <= -1));
-  // gui->pause->Ref().Set(logFile.length());
-  // gui->pause->Ref().Set(!showcaseMode);
+  gui->flipColors->Ref()->Set(logReader->flipColors);
+  gui->rgbOnly->Ref()->Set(false);
+  gui->enableMultiModel->Ref()->Set(Parse::get().arg(argc, argv, "-static", empty) <= -1);
+  gui->enableSmartDelete->Ref()->Set(Parse::get().arg(argc, argv, "-keep", empty) <= -1);
+  gui->pyramid->Ref()->Set(true);
+  gui->fastOdom->Ref()->Set(fastOdom);
+  // gui->confidenceThreshold->Ref()->Set(confidence);
+  gui->so3->Ref()->Set(so3);
+  gui->frameToFrameRGB->Ref()->Set(frameToFrameRGB);
+  gui->pause->Ref()->Set((Parse::get().arg(argc, argv, "-run", empty) <= -1));
+  // gui->pause->Ref()->Set(logFile.length());
+  // gui->pause->Ref()->Set(!showcaseMode);
 
   resizeStream = new GPUResize(Resolution::getInstance().width(), Resolution::getInstance().height(), Resolution::getInstance().width() / 2,
                                Resolution::getInstance().height() / 2);
@@ -388,7 +388,7 @@ void MainController::run() {
         }
 
         if (coFusion->processFrame(logReader->getFrameData(), currentPose, weightMultiplier) && !showcaseMode) {
-          gui->pause->Ref().Set(true);
+          gui->pause->Ref()->Set(true);
         }
 
         if (exportLabels) {
@@ -430,11 +430,11 @@ void MainController::run() {
 
     std::stringstream stri;
     stri << coFusion->getModelToModel().lastICPCount;
-    gui->trackInliers->Ref().Set(stri.str());
+    gui->trackInliers->Ref()->Set(stri.str());
 
     std::stringstream stre;
     stre << (std::isnan(coFusion->getModelToModel().lastICPError) ? 0 : coFusion->getModelToModel().lastICPError);
-    gui->trackRes->Ref().Set(stre.str());
+    gui->trackRes->Ref()->Set(stre.str());
 
     if (!gui->pause->Get()) {
       gui->resLog.Log((std::isnan(coFusion->getModelToModel().lastICPError) ? std::numeric_limits<float>::max()

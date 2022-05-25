@@ -38,7 +38,6 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 else(CMAKE_BUILD_TYPE MATCHES Release)
     message(STATUS "Release build.")
     add_compile_options(-O3)
-    add_compile_options(-Wno-maybe-uninitialized)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_definitions(-Dlinux=1)
@@ -61,9 +60,6 @@ target_link_libraries(CoFusion
                       gSLICr_lib # this should be included by target 'cofusion'
                       ${JPEG_LIBRARIES}
 )
-
-# deactivate 'class-memaccess' error for direct memcpy of list of 'Eigen::Vector4f'
-target_compile_options(CoFusion PRIVATE "-Wno-error=class-memaccess")
 
 add_library(CoFusionTools SHARED
             ${tools_srcs})

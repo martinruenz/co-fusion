@@ -63,8 +63,8 @@ class Ferns {
   class Frame {
    public:
     Frame(int n, int id, const Eigen::Matrix4f& pose, const int srcTime, const int numPixels, unsigned char* rgb = 0,
-          Eigen::Vector4f* verts = 0, Eigen::Vector4f* norms = 0)
-        : goodCodes(0), id(id), pose(pose), srcTime(srcTime), initRgb(rgb), initVerts(verts), initNorms(norms) {
+          const std::vector<Eigen::Vector4f> &verts = {}, const std::vector<Eigen::Vector4f> &norms = {})
+        : goodCodes(0), id(id), pose(pose), srcTime(srcTime), initRgb(rgb) {
       codes = new unsigned char[n];
 
       if (rgb) {
@@ -72,14 +72,12 @@ class Ferns {
         memcpy(this->initRgb, rgb, numPixels * 3);
       }
 
-      if (verts) {
-        this->initVerts = new Eigen::Vector4f[numPixels];
-        memcpy(this->initVerts, verts, numPixels * sizeof(Eigen::Vector4f));
+      if (!verts.empty()) {
+        this->initVerts = verts;
       }
 
-      if (norms) {
-        this->initNorms = new Eigen::Vector4f[numPixels];
-        memcpy(this->initNorms, norms, numPixels * sizeof(Eigen::Vector4f));
+      if (!norms.empty()) {
+        this->initNorms = norms;
       }
     }
 
@@ -87,10 +85,6 @@ class Ferns {
       delete[] codes;
 
       if (initRgb) delete[] initRgb;
-
-      if (initVerts) delete[] initVerts;
-
-      if (initNorms) delete[] initNorms;
     }
 
     unsigned char* codes;
@@ -99,8 +93,8 @@ class Ferns {
     Eigen::Matrix4f pose;
     const int srcTime;
     unsigned char* initRgb;
-    Eigen::Vector4f* initVerts;
-    Eigen::Vector4f* initNorms;
+    std::vector<Eigen::Vector4f> initVerts;
+    std::vector<Eigen::Vector4f> initNorms;
   };
 
   std::vector<Frame*> frames;
